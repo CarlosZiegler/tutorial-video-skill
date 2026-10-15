@@ -1,0 +1,37 @@
+{
+	"title": "Produktname",
+	"subtitle": "Was das Video zeigt",
+	"endTitle": "Produktname",
+	"endSubtitle": "Web · App · Browser",
+	"brand": {
+		"color": "#dd083b",
+		"logo": "../public/logo.svg",
+		"logoOnDark": "../public/logo-white.svg"
+	},
+	"voice": {
+		"say": "Anna",
+		"rate": 178,
+		"openai": {
+			"model": "gpt-4o-mini-tts",
+			"voice": "marin",
+			"instructions": "Sprache: Deutsch. Sprich wie eine deutsche Muttersprachlerin aus Deutschland, klares Hochdeutsch mit authentischer deutscher Aussprache – kein amerikanischer oder englischer Akzent. Ton: freundlich, ruhig, professionell, wie eine Produkterklärung. Speak German as a native speaker from Germany; no American accent."
+		}
+	},
+	"scenes": [
+		{
+			"id": "intro",
+			"chapter": "",
+			"vo": "Ein Satz, was das Produkt löst."
+		},
+		{
+			"id": "step1",
+			"chapter": "1 · Erster Schritt",
+			"vo": "Was man hier tut und warum."
+		},
+		{
+			"id": "outro",
+			"chapter": "",
+			"vo": "Produktname. Ein Satz zum Schluss."
+		}
+	]
+}
