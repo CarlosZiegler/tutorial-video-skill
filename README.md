@@ -8,9 +8,20 @@ See [SKILL.md](SKILL.md) for the workflow, the three recording modes and the got
 
 ## Install
 
+With the [Skills CLI](https://github.com/vercel-labs/skills) (works for Claude Code and other agents):
+
 ```bash
-git clone git@github.com:CarlosZiegler/tutorial-video-skill.git ~/.claude/skills/tutorial-video
+npx skills@latest add CarlosZiegler/tutorial-video-skill            # into the current project
+npx skills@latest add CarlosZiegler/tutorial-video-skill --global   # for your user account
 ```
+
+It is also part of the public collection [CarlosZiegler/zietec-skills](https://github.com/CarlosZiegler/zietec-skills) (`skills/video/tutorial-video`, generic templates):
+
+```bash
+npx skills@latest add CarlosZiegler/zietec-skills
+```
+
+Manual alternative: `git clone git@github.com:CarlosZiegler/tutorial-video-skill.git ~/.claude/skills/tutorial-video`.
 
 Claude Code picks it up as the `tutorial-video` skill ("make a tutorial video of …").
 

@@ -14,6 +14,7 @@ const out = join(base, "out", lang);
 const timeline = JSON.parse(readFileSync(join(out, "timeline.json"), "utf8"));
 const vo = JSON.parse(readFileSync(join(out, "vo.json"), "utf8"));
 const music = process.env.MUSIC !== "0";
+// TUTORIAL_CROP=w:h:x:y trims frame edges first (a headed browser leaves a white strip right/bottom).
 
 // The sync flash: the video starts with the first frame after the magenta ones.
 const isMagenta = (file) => {
@@ -80,7 +81,7 @@ execFileSync(
 		"-y", "-loglevel", "error", ...inputs,
 		"-filter_complex", filters.join(";"),
 		"-map", "0:v", "-map", "[aout]",
-		"-vf", "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=30,format=yuv420p",
+		"-vf", `${process.env.TUTORIAL_CROP ? `crop=${process.env.TUTORIAL_CROP},` : ""}scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=30,format=yuv420p`,
 		"-c:v", "libx264", "-preset", "slow", "-crf", "20", "-tune", "stillimage",
 		"-c:a", "aac", "-b:a", "160k", "-ar", "48000",
 		"-movflags", "+faststart", "-t", total.toFixed(2), file,

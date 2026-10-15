@@ -49,16 +49,21 @@ for (const scene of script.scenes) {
 }
 await browser.close();
 
-// 2. Rounded screen corners and the tap ring (Python/PIL keeps it dependency-free here).
+// 2. Rounded screen corners: the mask is the stage itself around a rounded hole, so the
+//    recording's square corners show exactly what lies behind them (bezel or background).
+//    Plus the tap ring.
+const firstPhoneScene = script.scenes.find((s) => !CARDS.has(s.id))?.id;
 execFileSync("python3", [
 	"-c",
 	`
 from PIL import Image, ImageDraw
-w,h,r=${SCREEN.w},${SCREEN.h},58
-m=Image.new("RGBA",(w,h),(17,17,17,255)); d=ImageDraw.Draw(m)
-d.rounded_rectangle([0,0,w-1,h-1],radius=r,fill=(0,0,0,0)); m.save("${join(stageDir, "mask.png")}")
+x,y,w,h,r=${SCREEN.x},${SCREEN.y},${SCREEN.w},${SCREEN.h},58
+bg=Image.open("${join(stageDir, `${firstPhoneScene}.png`)}").convert("RGBA").crop((x,y,x+w,y+h))
+hole=Image.new("L",(w,h),255); ImageDraw.Draw(hole).rounded_rectangle([0,0,w-1,h-1],radius=r,fill=0)
+bg.putalpha(hole); bg.save("${join(stageDir, "mask.png")}")
 s=72; g=Image.new("RGBA",(s,s),(0,0,0,0)); d=ImageDraw.Draw(g)
-c=tuple(int("${(brand.color ?? "#dd083b").slice(1)}"[i:i+2],16) for i in (0,2,4)); d.ellipse([4,4,s-5,s-5],outline=c+(255,),width=6); d.ellipse([22,22,s-23,s-23],fill=c+(110,)); g.save("${join(stageDir, "tap.png")}")
+c=tuple(int("${(brand?.color ?? "#dd083b").slice(1)}"[i:i+2],16) for i in (0,2,4))
+d.ellipse([4,4,s-5,s-5],outline=c+(255,),width=6); d.ellipse([22,22,s-23,s-23],fill=c+(110,)); g.save("${join(stageDir, "tap.png")}")
 `,
 ]);
 
@@ -101,7 +106,8 @@ tl.taps.forEach((tap, i) => {
 	const t = tap.t - t0;
 	const x = Math.round(SCREEN.x + tap.x * SCREEN.w - 36);
 	const y = Math.round(SCREEN.y + tap.y * SCREEN.h - 36);
-	filters.push(`[${last}][tp${i}]overlay=${x}:${y}:enable='between(t,${(t + 0.05).toFixed(2)},${(t + 0.6).toFixed(2)})'[t${i}]`);
+	// The ring shows just before and during the tap: the screen reacts ~0.3 s after it.
+	filters.push(`[${last}][tp${i}]overlay=${x}:${y}:enable='between(t,${(t - 0.3).toFixed(2)},${(t + 0.25).toFixed(2)})'[t${i}]`);
 	last = `t${i}`;
 });
 filters.push(`[${last}]format=yuv420p[vout]`);
