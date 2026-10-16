@@ -15,6 +15,12 @@
 			"model": "gpt-4o-mini-tts",
 			"voice": "marin",
 			"instructions": "Sprache: Deutsch. Sprich wie eine deutsche Muttersprachlerin aus Deutschland, klares Hochdeutsch mit authentischer deutscher Aussprache – kein amerikanischer oder englischer Akzent. Ton: freundlich, ruhig, professionell, wie eine Produkterklärung. Speak German as a native speaker from Germany; no American accent."
+		},
+		"elevenlabs": {
+			"voiceId": "<from scripts/voice-samples.mjs, added to the account>",
+			"model": "eleven_v4",
+			"languageCode": "de",
+			"settings": { "stability": 0.5, "similarity_boost": 0.75 }
 		}
 	},
 	"scenes": [
