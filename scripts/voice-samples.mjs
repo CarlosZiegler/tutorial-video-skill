@@ -14,7 +14,7 @@ const outDir = resolve(process.argv[2] ?? "voice-samples");
 const lang = process.argv[3] ?? "de";
 const sentence =
 	process.argv[4] ??
-	"Willkommen bei PMC-HR. In zwei Minuten zeigen wir Ihnen, wie Sie Ihre Arbeitszeit erfassen.";
+	"Willkommen. In zwei Minuten zeigen wir Ihnen, wie Sie die App im Alltag nutzen.";
 const count = Number(process.argv[5] ?? 12);
 mkdirSync(outDir, { recursive: true });
 

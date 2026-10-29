@@ -1,6 +1,6 @@
 # tutorial-video — Claude Code skill
 
-Narrated product tutorial videos, produced automatically: script → OpenAI voice-over → a real
+Narrated product tutorial videos, produced automatically: script → voice-over (ElevenLabs, OpenAI, Higgsfield, macOS say) → a real
 recording (Playwright on a web app or an extension popup, or the iOS simulator) → ffmpeg with
 cursor and tap highlights, captions, ducked music, title and end cards → 1080p mp4.
 
@@ -27,12 +27,12 @@ Claude Code picks it up as the `tutorial-video` skill ("make a tutorial video of
 
 ## Requirements
 
-- Node 22+, `ffmpeg` 8 (`brew install ffmpeg`), Python 3 with Pillow (masks, contact sheets)
+- Node 22+, `ffmpeg` 8 (`brew install ffmpeg`), Python 3 with Pillow (masks, contact sheets, stills)
 - Playwright in the project (`playwright` package) and its browsers: `npx playwright install chromium chromium-headless-shell`
-- Voice: `OPENAI_API_KEY` (env, a `.env` above the tutorial folder, or keychain `openai-api-key`); `VOICE=say` uses macOS voices for a free draft
-- iOS mode: Xcode simulator + [argent](https://www.npmjs.com/package/@swmansion/argent) (`npx -y @swmansion/argent --help` once)
+- Voice: `ELEVENLABS_API_KEY` or `OPENAI_API_KEY` (env, a `.env` above the tutorial folder, or keychain `elevenlabs-api-key` / `openai-api-key`); or clips generated elsewhere (e.g. the Higgsfield MCP) converted with `vo-from-files.mjs`; `VOICE=say` uses macOS voices for a free draft
+- iOS mode: Xcode simulator + [argent](https://www.npmjs.com/package/@swmansion/argent) (`npx -y @swmansion/argent --help` once); macOS `avconvert` (built in) for the recordings
 
 ## Layout
 
-- `scripts/` — generic: `voice.mjs`, `render-frames.mjs`, `render-phone.mjs`, `overlay.js`, `driver.mjs`
-- `templates/` — starting points copied into a project's `tutorial/` folder and adapted: `script.example.json`, `record-web.mjs`, `record-stage.mjs` + `stage-popup.html` + `demo-mock.js`, `record-sim.mjs` + `stage-phone.html`. They come from a real project (PMC) and show working scene actions; replace the selectors, routes and texts with the app's own.
+- `scripts/` — generic: `voice.mjs`, `voice-samples.mjs`, `vo-from-files.mjs`, `render-frames.mjs`, `render-phone.mjs`, `overlay.js`, `driver.mjs`, `contact-sheet.py`, `find-label.py`, `pixelate-stills.py`
+- `templates/` — starting points copied into a project's `tutorial/` folder and adapted: `script.example.json`, `record-web.mjs`, `record-stage.mjs` + `stage-popup.html` + `demo-mock.js`, `record-sim.mjs` + `stage-phone.html`. The web and stage templates come from a real project and show working scene actions; `record-sim.mjs` is a generic example. Replace the selectors, labels, routes and texts with the app's own.
