@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>PMC Stempeluhr — Tutorial</title>
+<title>Tutorial stage</title>
 <style>
-/* 1920×1080 stage: a browser window with the PMC portal, the real popup under the toolbar icon,
-   a cursor, captions and the cards between chapters. */
+/* Mode B — 1920×1080 stage: a browser window with a stand-in of the web app, the real popup
+   (demo.html, loaded with demo-mock.js) under the toolbar icon, a cursor, captions and the cards.
+   record-stage.mjs drives it through window.__stage. EXAMPLE texts: replace with the product's. */
 :root {
 	--brand: #dd083b;
 	--ink: #18181b;
@@ -123,64 +124,64 @@ body { background: radial-gradient(1200px 700px at 15% 0%, var(--ground-2), tran
 </head>
 <body>
 <div class="sync" id="sync"></div>
-<div class="chapter"><img src="/stage/pmc_gray.svg" alt=""><span id="chapter"></span></div>
+<div class="chapter"><img src="/stage/logo.svg" alt=""><span id="chapter"></span></div>
 
 <div class="browser">
-	<div class="tabs"><div class="dots"><i></i><i></i><i></i></div><div class="tab"><img src="/icon/16.png" alt="">PMC · Lohn24</div></div>
+	<div class="tabs"><div class="dots"><i></i><i></i><i></i></div><div class="tab"><img src="/icon/16.png" alt="">Example App</div></div>
 	<div class="toolbar">
-		<div class="url" id="url">pmc.lohn24.de/a123456/dashboard</div>
+		<div class="url" id="url">app.example.com/dashboard</div>
 		<div class="ext"><svg class="puzzle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.4 11H18V7a2 2 0 0 0-2-2h-4V3.6a2.6 2.6 0 0 0-5.2 0V5H3v5.4h1.4a2.6 2.6 0 0 1 0 5.2H3V21h5.4v-1.4a2.6 2.6 0 0 1 5.2 0V21H16a2 2 0 0 0 2-2v-4h1.4a2 2 0 0 0 0-4Z"/></svg></div>
 		<div class="ext" id="ext"><img src="/icon/32.png" alt=""><span class="badge" id="badge"></span></div>
 	</div>
 	<div class="page">
 		<div class="portal" id="portal">
-			<div class="side"><img src="/stage/pmc_gray.svg" alt=""><div class="nav on">Dashboard</div><div class="nav">Meine Arbeitszeiten</div><div class="nav">Urlaub</div><div class="nav">Dokumente</div><div class="nav">Einstellungen</div></div>
+			<div class="side"><img src="/stage/logo.svg" alt=""><div class="nav on">Dashboard</div><div class="nav">Time</div><div class="nav">Leave</div><div class="nav">Documents</div><div class="nav">Settings</div></div>
 			<div class="main">
-				<h1>Guten Morgen, Erika</h1>
+				<h1>Good morning, Alex</h1>
 				<div class="cards">
-					<div class="card"><b>Arbeitszeit</b><i class="ghost w60"></i><i class="ghost big"></i></div>
-					<div class="card"><b>Urlaub</b><i class="ghost w40"></i><i class="ghost big"></i></div>
-					<div class="card"><b>Dokumente</b><i class="ghost w60"></i><i class="ghost big"></i></div>
+					<div class="card"><b>Time</b><i class="ghost w60"></i><i class="ghost big"></i></div>
+					<div class="card"><b>Leave</b><i class="ghost w40"></i><i class="ghost big"></i></div>
+					<div class="card"><b>Documents</b><i class="ghost w60"></i><i class="ghost big"></i></div>
 				</div>
-				<div class="card"><b>Neuigkeiten</b><i class="ghost"></i><i class="ghost w60"></i><i class="ghost w40"></i></div>
+				<div class="card"><b>News</b><i class="ghost"></i><i class="ghost w60"></i><i class="ghost w40"></i></div>
 			</div>
 		</div>
 		<div class="connect" id="connect">
 			<div class="ccard">
-				<h2>Browser-Erweiterung verbinden</h2>
-				<p>Die PMC-Stempeluhr im Browser möchte sich mit Ihrem Zugang verbinden.</p>
-				<dl><dt>Angemeldet als</dt><dd>Erika Muster</dd><dt>Firma</dt><dd>Pflegedienst Nord GmbH</dd></dl>
-				<ul><li>Die Erweiterung kann nur stempeln, Pausen erfassen und Ihre Arbeitstage bestätigen. Auf andere Daten hat sie keinen Zugriff.</li><li>Die Verbindung gilt 7 Tage. Danach melden Sie sich hier erneut an.</li></ul>
-				<div class="cbtns" id="cbtns"><span class="cbtn">Abbrechen</span><span class="cbtn primary" id="verbinden">Verbinden</span></div>
-				<div class="cdone" id="cdone">✓ Verbunden. Sie können dieses Fenster schließen.</div>
+				<h2>Connect the browser extension</h2>
+				<p>The Example App extension wants to connect to your account.</p>
+				<dl><dt>Signed in as</dt><dd>Alex Example</dd><dt>Company</dt><dd>Example Ltd</dd></dl>
+				<ul><li>The extension can only start and stop the timer and confirm your days. It has no access to other data.</li><li>The connection lasts 7 days.</li></ul>
+				<div class="cbtns" id="cbtns"><span class="cbtn">Cancel</span><span class="cbtn primary" id="connectButton">Connect</span></div>
+				<div class="cdone" id="cdone">✓ Connected. You can close this window.</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="popup hidden" id="popup"><iframe id="popupFrame" title="PMC Stempeluhr" src="/demo.html"></iframe></div>
+<div class="popup hidden" id="popup"><iframe id="popupFrame" title="Extension popup" src="/demo.html"></iframe></div>
 
-<div class="notify" id="notify"><img src="/icon/128.png" alt=""><div><small>PMC Stempeluhr · jetzt</small><b id="notifyTitle"></b><span id="notifyText"></span></div></div>
+<div class="notify" id="notify"><img src="/icon/128.png" alt=""><div><small>Example App · now</small><b id="notifyTitle"></b><span id="notifyText"></span></div></div>
 
 <div class="overlay" id="install"><div class="panel">
-	<h2>In einer Minute eingerichtet</h2>
+	<h2>Set up in a minute</h2>
 	<div class="steps">
-		<div class="step" id="step1"><div class="n">1</div><b>Link öffnen</b><span>Ihr Arbeitgeber schickt den Link zur Erweiterung im Chrome Web Store.</span></div>
-		<div class="step" id="step2"><div class="n">2</div><b>Hinzufügen</b><span>„Zu Chrome hinzufügen“. Funktioniert auch in Microsoft Edge.</span></div>
-		<div class="step" id="step3"><div class="n">3</div><b>Anheften</b><span>Über das Puzzle-Symbol anheften – die Stempeluhr ist immer einen Klick entfernt.</span></div>
+		<div class="step" id="step1"><div class="n">1</div><b>Open the link</b><span>The extension's page in the Chrome Web Store.</span></div>
+		<div class="step" id="step2"><div class="n">2</div><b>Add it</b><span>"Add to Chrome". Works in Microsoft Edge too.</span></div>
+		<div class="step" id="step3"><div class="n">3</div><b>Pin it</b><span>Pin it from the puzzle icon — always one click away.</span></div>
 	</div>
 </div></div>
 
 <div class="overlay" id="security"><div class="panel">
-	<h2>Nur was die Stempeluhr braucht</h2>
+	<h2>Only what it needs</h2>
 	<div class="two">
-		<div class="list yes"><h3>Die Erweiterung kann</h3><div>Ein- und ausstempeln</div><div>Pausen erfassen</div><div>Arbeitstage bestätigen</div><div>Offene Tage anzeigen</div></div>
-		<div class="list no"><h3>Kein Zugriff auf</h3><div>Lohnabrechnungen und Dokumente</div><div>Daten anderer Mitarbeitender</div><div>Ihren Browserverlauf</div><div>Ihr Passwort</div></div>
+		<div class="list yes"><h3>The extension can</h3><div>Start and stop the timer</div><div>Record breaks</div><div>Confirm days</div><div>Show open days</div></div>
+		<div class="list no"><h3>No access to</h3><div>Documents</div><div>Other people's data</div><div>Your browsing history</div><div>Your password</div></div>
 	</div>
 </div></div>
 
 <div class="card-full" id="titleCard"><div class="inner"><img class="icon" src="/icon/128.png" alt=""><h1 id="titleText"></h1><div class="rule"></div><p id="subtitleText"></p></div></div>
-<div class="card-full" id="endCard"><div class="inner"><img class="logo" src="/stage/pmc_white.svg" alt=""><h1>PMC Stempeluhr</h1><div class="rule"></div><p>Zeiterfassung mit einem Klick · Web · App · Browser</p></div></div>
+<div class="card-full" id="endCard"><div class="inner"><img class="logo" src="/stage/logo-white.svg" alt=""><h1 id="endTitle"></h1><div class="rule"></div><p id="endSubtitle"></p></div></div>
 
 <div class="caption" id="caption"></div>
 <div class="ring" id="ring"></div>
@@ -197,7 +198,7 @@ body { background: radial-gradient(1200px 700px at 15% 0%, var(--ground-2), tran
 		page: (name) => {
 			$("portal").style.opacity = name === "portal" ? 1 : 0;
 			$("connect").style.opacity = name === "connect" ? 1 : 0;
-			$("url").textContent = name === "connect" ? "pmc.lohn24.de/extension/connect" : "pmc.lohn24.de/a123456/dashboard";
+			$("url").textContent = name === "connect" ? "app.example.com/extension/connect" : "app.example.com/dashboard";
 		},
 		connected: () => { $("cbtns").style.display = "none"; $("cdone").style.display = "block"; },
 		popup: (open) => { $("popup").classList.toggle("hidden", !open); $("ext").classList.toggle("active", open); },
@@ -207,7 +208,8 @@ body { background: radial-gradient(1200px 700px at 15% 0%, var(--ground-2), tran
 		overlay: (id, on) => $(id).classList.toggle("on", on),
 		step: (n) => { for (let i = 1; i <= 3; i++) $(`step${i}`).classList.toggle("on", i <= n); },
 		title: (title, subtitle, on) => { $("titleText").textContent = title; $("subtitleText").textContent = subtitle; $("titleCard").classList.toggle("on", on); },
-		end: (on) => $("endCard").classList.toggle("on", on),
+		end: (on, title, subtitle) => { if (title !== undefined) { $("endTitle").textContent = title; $("endSubtitle").textContent = subtitle ?? ""; } $("endCard").classList.toggle("on", on); },
+		brand: (color) => document.documentElement.style.setProperty("--brand", color),
 		move: (x, y, ms = 700) => {
 			const c = $("cursor");
 			c.style.transitionDuration = `${ms}ms`;
@@ -228,23 +230,13 @@ body { background: radial-gradient(1200px 700px at 15% 0%, var(--ground-2), tran
 		},
 		rectOf: (id) => { const r = $(id).getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; },
 	};
-	// The popup sizes to its content like a real one; the badge follows the demo's clock.
+	// The popup sizes to its content like a real one; the badge shows __demo.badge().
 	setInterval(() => {
 		const w = $("popupFrame").contentWindow;
-		const content = w?.document?.querySelector(".popup");
+		const content = w?.document?.getElementById("root")?.firstElementChild; // the popup's root element
 		if (content) $("popup").style.height = `${Math.min(780, Math.ceil(content.getBoundingClientRect().height))}px`;
-		const demo = w?.__demo;
-		if (!demo) return;
-		const world = demo.world;
-		const now = w.Date.now();
-		if (world.zustand === "ARBEIT") {
-			const minutes = world.blocks.filter((b) => b.typ === "ARBEIT").reduce((sum, b) => sum + ((b.ende ? Date.parse(b.ende) : now) - Date.parse(b.beginn)) / 60000, 0);
-			window.__stage.badge(`${Math.floor(minutes / 60)}:${String(Math.floor(minutes % 60)).padStart(2, "0")}`, "");
-		} else if (world.zustand === "PAUSE") {
-			window.__stage.badge("P", "pause");
-		} else {
-			window.__stage.badge(world.signedIn && world.open.length ? String(world.open.length) : "", "alert");
-		}
+		const badge = w?.__demo?.badge?.();
+		if (badge) window.__stage.badge(badge.text, badge.tone);
 	}, 250);
 })();
 </script>
